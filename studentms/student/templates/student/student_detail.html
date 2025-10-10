@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Admission No:</strong> {{ student.admission_number }}</li>
+    <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.dob }}</li>
+    <li class="list-group-item"><strong>Gender:</strong> {{ student.get_gender_display }}</li>
+    <li class="list-group-item"><strong>Address:</strong> {{ student.address }}</li>
+  </ul>
+  <a href="{% url 'student_update' student.pk %}" class="btn btn-primary mt-3">Edit</a>
+  <a href="{% url 'student_delete' student.pk %}" class="btn btn-danger mt-3">Delete</a>
+  <a href="{% url 'student_list' %}" class="btn btn-secondary mt-3">Back</a>
+</div>
+{% endblock %}
