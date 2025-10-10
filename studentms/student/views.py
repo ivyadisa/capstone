@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Student
+from .models import Student, Teacher
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import StudentForm
+from .forms import StudentForm, TeacherForm
 from django.shortcuts import get_object_or_404
 
 
@@ -96,3 +96,42 @@ def student_delete(request, pk):
         messages.success(request, "Student deleted successfully.")
         return redirect('student_list')
     return render(request, 'student/student_confirm_delete.html', {'student': student})
+
+# Teachers Views
+def teacher_list(request):
+    teachers = Teacher.objects.all()
+    return render(request, 'student/teacher_list.html', {'teachers': teachers})
+
+def teacher_detail(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    return render(request, 'student/teacher_detail.html', {'teacher': teacher})
+
+def teacher_create(request):
+    if request.method == "POST":
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_list')
+    else:
+        form = TeacherForm()
+    return render(request, 'student/teacher_form.html', {'form': form})
+
+def teacher_update(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    if request.method == "POST":
+        form = TeacherForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher_detail', pk=teacher.pk)
+    else:
+        form = TeacherForm(instance=teacher)
+    return render(request, 'student/teacher_form.html', {'form': form})
+
+def teacher_delete(request, pk):
+    teacher = get_object_or_404(Teacher, pk=pk)
+    if request.method == "POST":
+        teacher.delete()
+        return redirect('teacher_list')
+    return render(request, 'student/teacher_confirm_delete.html', {'teacher': teacher})
+
+
