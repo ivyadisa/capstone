@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student, Teacher
+from .models import Student, Teacher, Class
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -13,7 +13,7 @@ class StudentForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
-
+# teacher form
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
@@ -26,3 +26,9 @@ class TeacherForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+# class form
+class ClassForm(forms.ModelForm):
+    class Meta:
+        model = Class
+        fields = ['name', 'teacher']

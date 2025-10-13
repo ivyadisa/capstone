@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Class Details</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">{{ class.name }}</h4>
+            <p><strong>Class ID:</strong> {{ class.id }}</p>
+            <p><strong>Class Teacher:</strong> {{ class.teacher.first_name }} {{ class.teacher.last_name }}</p>
+
+            {% if class.students.all %}
+                <h5>Students in this Class:</h5>
+                <ul>
+                    {% for student in class.students.all %}
+                        <li>{{ student.first_name }} {{ student.last_name }}</li>
+                    {% empty %}
+                        <li>No students enrolled yet.</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No students enrolled yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{% url 'class_update' class.id %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'class_delete' class.id %}" class="btn btn-danger">Delete</a>
+    <a href="{% url 'class_list' %}" class="btn btn-secondary">Back to Classes</a>
+</div>
+
+{% endblock %}

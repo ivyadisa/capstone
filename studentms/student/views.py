@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Student, Teacher
+from .models import Student, Teacher, Class
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -7,8 +7,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import StudentForm, TeacherForm
+from .forms import StudentForm, TeacherForm, ClassForm
 from django.shortcuts import get_object_or_404
+from rest_framework import generics
+from .serializers import StudentSerializer, TeacherSerializer, ClassSerializer
 
 
 # Create your views here.
@@ -97,6 +99,15 @@ def student_delete(request, pk):
         return redirect('student_list')
     return render(request, 'student/student_confirm_delete.html', {'student': student})
 
+class StudentListCreateAPI(generics.ListCreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentRetrieveUpdateDeleteAPI(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
 # Teachers Views
 def teacher_list(request):
     teachers = Teacher.objects.all()
@@ -133,5 +144,62 @@ def teacher_delete(request, pk):
         teacher.delete()
         return redirect('teacher_list')
     return render(request, 'student/teacher_confirm_delete.html', {'teacher': teacher})
+
+class TeacherListCreateAPI(generics.ListCreateAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+class TeacherRetrieveUpdateDeleteAPI(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+    # classes
+def class_list(request):
+    classes = Class.objects.all()
+    return render(request, 'student/class_list.html', {'classes':classes})
+
+def class_detail(request, pk):
+    class_obj = get_object_or_404(Class, pk=pk)
+    return render (request, 'student/class_detail.html', {'class_obj': class_obj})
+
+def class_create(request):
+    if request.method == "POST":
+        form = ClassForm (request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('class_list')
+    else:
+        form = ClassForm()
+    return render (request, 'student/class_form.html', {'form':form})
+
+def class_update(request, pk):
+    class_obj = get_object_or_404(Class, pk=pk )
+    if request.method == "POST":
+        form = ClassForm(request.POST, instance= class_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('class_detail', pk=class_obj.pk)
+    else:
+        form = ClassForm(instance= class_obj)
+    return render( request, 'student/class_form.html', {'form': form})
+
+def class_delete(request, pk):
+    class_obj= get_object_or_404(Class, pk )
+    if request.method == "POST":
+        class_obj.delete()
+        return redirect('class_list')
+    
+    return render(request, 'student/class_confirm_delete.html', {'class_obj': class_obj})
+
+class ClassListCreateAPI(generics.ListCreateAPIView):
+    queryset = Class.objects.all()
+    serializer_class = ClassSerializer
+
+class ClassRetrieveUpdateDeleteAPI(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Class.objects.all()
+    serializer_class = ClassSerializer
+
+
+
 
 
