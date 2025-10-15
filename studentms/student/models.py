@@ -1,16 +1,19 @@
 from django.db import models
-# Create your models here.
+from django.contrib.auth.models import User 
+
 
 class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)  
+
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
     ]
-    admission_number = models.CharField( max_length = 20, unique= True)
-    first_name = models.CharField(max_length= 100 )
-    last_name = models.CharField(max_length= 100 )
+    admission_number = models.CharField(max_length=20, unique=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     dob = models.DateField()
-    gender = models.CharField(max_length=1, choices= GENDER_CHOICES )
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     address = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -19,6 +22,8 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)  
+
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -36,11 +41,12 @@ class Teacher(models.Model):
 
 
 class Class(models.Model):
-    name = models.CharField(max_length=50, unique=True)  
+    name = models.CharField(max_length=50, unique=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, related_name="classes")
 
     def __str__(self):
         return self.name
+
 
 class Fee(models.Model):
     PAYMENT_STATUS_CHOICES = [
@@ -50,7 +56,7 @@ class Fee(models.Model):
     ]
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='fees')
-    term = models.CharField(max_length=50)  
+    term = models.CharField(max_length=50)
     amount_due = models.DecimalField(max_digits=10, decimal_places=2)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     balance = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0)
@@ -70,4 +76,3 @@ class Fee(models.Model):
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.term}"
-

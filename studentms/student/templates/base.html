@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>{% block title %}Student Management System{% endblock %}</title>
 
-  <!-- Bootstrap CSS -->
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
   <style>
@@ -42,41 +42,41 @@
 </head>
 <body>
 
-  <!-- ✅ Sidebar Added Here -->
+  
   <div class="sidebar">
     <h4 class="text-center mb-4">Dashboard</h4>
-    <a href="#">🏠 Home</a>
-    <a href="{% url 'student_list' %}">🎓 Students</a>
-    <a href="{% url 'teacher_list' %}">👩‍🏫 Teachers</a>
-    <a href="{% url 'class_list' %}">📚 Classes</a>
-    <a href="{% url 'fee_list' %}">💰 Fees</a>
-    <a href="{% url 'logout' %}">🚪 Logout</a>
+    <a href="#"> Home</a>
+    <a href="{% url 'student_list' %}"> Students</a>
+    <a href="{% url 'teacher_list' %}"> Teachers</a>
+    <a href="{% url 'class_list' %}"> Classes</a>
+    <a href="{% url 'fee_list' %}"> Fees</a>
+    <a href="{% url 'logout' %}">Logout</a>
   </div>
-  <!-- ✅ End of Sidebar -->
+  
 
-  <!-- ✅ Main Content Area -->
+  
   <div class="content">
 
-    <!-- ✅ Navbar Added Here -->
+    
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Welcome, {{ user.username }}</a>
       </div>
     </nav>
 
-    <!-- ✅ Main Page Content -->
+    
     <div class="mt-4">
       {% block content %}{% endblock %}
     </div>
 
-    <!-- ✅ Footer remains at the bottom -->
+    
     <footer class="mt-5 text-center text-muted border-top pt-3">
-      <p>&copy; {{ year|default:2025 }} Student Management System | Built with ❤️ and Django + Bootstrap</p>
+      <p>&copy; {{ year|default:2025 }} Student Management System | Built with Django + Bootstrap</p>
     </footer>
 
   </div>
 
-  <!-- Bootstrap JS -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

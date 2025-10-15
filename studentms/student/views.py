@@ -13,10 +13,6 @@ from rest_framework import generics
 from .serializers import StudentSerializer, TeacherSerializer, ClassSerializer, FeeSerializer
 
 
-# Create your views here.
-
-
-
 def signup_views(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
