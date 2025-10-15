@@ -30,6 +30,14 @@ urlpatterns = [
     path('classes/<int:pk>/edit/', views.class_update, name='class_update'),
     path('classes/<int:pk>/delete/', views.class_delete, name='class_delete'),
 
+      # Fees URLs
+    path('fees/', views.fee_list, name='fee_list'),
+    path('fees/<int:pk>/', views.fee_detail, name='fee_detail'),
+    path('fees/add/', views.fee_create, name='fee_create'),
+    path('fees/<int:pk>/edit/', views.fee_update, name='fee_update'),
+    path('fees/<int:pk>/delete/', views.fee_delete, name='fee_delete'),
+
+
     # API Endpoints
     path('api/students/', views.StudentListCreateAPI.as_view(), name='student_api_list'),
     path('api/students/<int:pk>/', views.StudentRetrieveUpdateDeleteAPI.as_view(), name='student_api_detail'),
@@ -39,6 +47,10 @@ urlpatterns = [
 
     path('api/classes/', views.ClassListCreateAPI.as_view(), name='class_api_list'),
     path('api/classes/<int:pk>/', views.ClassRetrieveUpdateDeleteAPI.as_view(), name='class_api_detail'),
+
+     
+    path('api/fees/', views.FeeListCreateAPI.as_view(), name='fee_api_list'),
+    path('api/fees/<int:pk>/', views.FeeRetrieveUpdateDeleteAPI.as_view(), name='fee_api_detail'),
 
 
 

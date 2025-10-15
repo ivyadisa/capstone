@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Delete Fee Record</h2>
+<p>Are you sure you want to delete the fee record for <strong>{{ fee.student.first_name }} {{ fee.student.last_name }}</strong> ({{ fee.term }})?</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Yes, Delete</button>
+  <a href="{% url 'fee_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

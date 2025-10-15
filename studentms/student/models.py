@@ -41,3 +41,33 @@ class Class(models.Model):
 
     def __str__(self):
         return self.name
+
+class Fee(models.Model):
+    PAYMENT_STATUS_CHOICES = [
+        ('Paid', 'Paid'),
+        ('Pending', 'Pending'),
+        ('Partial', 'Partial'),
+    ]
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='fees')
+    term = models.CharField(max_length=50)  
+    amount_due = models.DecimalField(max_digits=10, decimal_places=2)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0)
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES, default='Pending')
+    payment_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        self.balance = self.amount_due - self.amount_paid
+        if self.balance == 0:
+            self.payment_status = 'Paid'
+        elif self.amount_paid > 0 and self.balance > 0:
+            self.payment_status = 'Partial'
+        else:
+            self.payment_status = 'Pending'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.student.first_name} {self.student.last_name} - {self.term}"
+

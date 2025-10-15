@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Student, Teacher, Class
+from .models import Student, Teacher, Class, Fee
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -7,10 +7,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import StudentForm, TeacherForm, ClassForm
+from .forms import StudentForm, TeacherForm, ClassForm, FeeForm
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from .serializers import StudentSerializer, TeacherSerializer, ClassSerializer
+from .serializers import StudentSerializer, TeacherSerializer, ClassSerializer, FeeSerializer
 
 
 # Create your views here.
@@ -198,6 +198,68 @@ class ClassListCreateAPI(generics.ListCreateAPIView):
 class ClassRetrieveUpdateDeleteAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
+
+# FEES MODULE VIEWS
+
+@login_required(login_url='login')
+def fee_list(request):
+    fees = Fee.objects.select_related('student').all()
+    return render(request, 'student/fee_list.html', {'fees': fees})
+
+
+@login_required(login_url='login')
+def fee_detail(request, pk):
+    fee = get_object_or_404(Fee, pk=pk)
+    return render(request, 'student/fee_detail.html', {'fee': fee})
+
+
+@login_required(login_url='login')
+def fee_create(request):
+    if request.method == 'POST':
+        form = FeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Fee record added successfully.")
+            return redirect('fee_list')
+    else:
+        form = FeeForm()
+    return render(request, 'student/fee_form.html', {'form': form, 'title': 'Add Fee Record'})
+
+
+@login_required(login_url='login')
+def fee_update(request, pk):
+    fee = get_object_or_404(Fee, pk=pk)
+    if request.method == 'POST':
+        form = FeeForm(request.POST, instance=fee)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Fee record updated successfully.")
+            return redirect('fee_list')
+    else:
+        form = FeeForm(instance=fee)
+    return render(request, 'student/fee_form.html', {'form': form, 'title': 'Edit Fee Record'})
+
+
+@login_required(login_url='login')
+def fee_delete(request, pk):
+    fee = get_object_or_404(Fee, pk=pk)
+    if request.method == 'POST':
+        fee.delete()
+        messages.success(request, "Fee record deleted successfully.")
+        return redirect('fee_list')
+    return render(request, 'student/fee_confirm_delete.html', {'fee': fee})
+
+
+# DRF API Views
+class FeeListCreateAPI(generics.ListCreateAPIView):
+    queryset = Fee.objects.all()
+    serializer_class = FeeSerializer
+
+
+class FeeRetrieveUpdateDeleteAPI(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Fee.objects.all()
+    serializer_class = FeeSerializer
+
 
 
 

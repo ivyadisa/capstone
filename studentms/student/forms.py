@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student, Teacher, Class
+from .models import Student, Teacher, Class, Fee
 
 class StudentForm(forms.ModelForm):
     class Meta:
@@ -32,3 +32,18 @@ class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
         fields = ['name', 'teacher']
+
+# Fee form
+
+class FeeForm(forms.ModelForm):
+    class Meta:
+        model = Fee
+        fields = ['student', 'term', 'amount_due', 'amount_paid', 'payment_date']
+        widgets = {
+            'student': forms.Select(attrs={'class': 'form-select'}),
+            'term': forms.TextInput(attrs={'class': 'form-control'}),
+            'amount_due': forms.NumberInput(attrs={'class': 'form-control'}),
+            'amount_paid': forms.NumberInput(attrs={'class': 'form-control'}),
+            'payment_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+

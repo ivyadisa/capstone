@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Fee Details</h2>
+<ul class="list-group">
+  <li class="list-group-item"><strong>Student:</strong> {{ fee.student.first_name }} {{ fee.student.last_name }}</li>
+  <li class="list-group-item"><strong>Term:</strong> {{ fee.term }}</li>
+  <li class="list-group-item"><strong>Amount Due:</strong> {{ fee.amount_due }}</li>
+  <li class="list-group-item"><strong>Amount Paid:</strong> {{ fee.amount_paid }}</li>
+  <li class="list-group-item"><strong>Balance:</strong> {{ fee.balance }}</li>
+  <li class="list-group-item"><strong>Status:</strong> {{ fee.payment_status }}</li>
+  <li class="list-group-item"><strong>Payment Date:</strong> {{ fee.payment_date }}</li>
+</ul>
+<a href="{% url 'fee_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+{% endblock %}
