@@ -6,6 +6,6 @@ urlpatterns = [
     path('', include('student.urls')),
 
 
-    path('', lambda request: redirect('login', permanent=False)),
+    #path('', lambda request: redirect('login', permanent=False)),
     
 ]
