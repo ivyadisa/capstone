@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-default-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['https://capstone-1-ib4m.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['capstone-1-ib4m.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
