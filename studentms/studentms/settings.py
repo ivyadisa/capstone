@@ -119,7 +119,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Security (for production)
-CSRF_TRUSTED_ORIGINS = ['https://yourappname.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://capstone-1-ib4m.onrender.com']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
